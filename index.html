@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artur Randomizer</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .section img {
+            height: 200px; /* Fixed height */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button onclick="randomize()">Generate</button>
+        
+        <div class="section">
+            <h2>Breakfast</h2>
+            <p id="breakfast"></p>
+            <img id="breakfast-img" alt="Breakfast Image">
+        </div>
+
+        <div class="section">
+            <h2>Lunch</h2>
+            <p id="lunch"></p>
+            <img id="lunch-img" alt="Lunch Image">
+        </div>
+        
+        <div class="section">
+            <h2>Dinner</h2>
+            <p id="dinner"></p>
+            <img id="dinner-img" alt="Dinner Image">
+        </div>
+        
+        <div class="section">
+            <h2>Outfit</h2>
+            <p id="outfit"></p>
+            <img id="body-img" alt="Body Wear Image">
+            <img id="pants-img" alt="Pants Image">
+        </div>
+    </div>
+
+    <script>
+        const foodOptions = [
+            { item: 'Egg', weight: 0.4 },
+            { item: 'Granola', weight: 0.7 },
+            { item: 'Sandwich', weight: 0.15 },
+            { item: 'Other', weight: 0.2 },
+        ];
+        
+        const lunchOptions = [
+            { item: 'Rice', weight: 0.5 },
+            { item: 'Pasta', weight: 0.3 },
+            { item: 'Salad', weight: 0.2 },
+            { item: 'Other', weight: 0.2 },
+        ];
+        
+        const dinnerOptions = [
+            { item: 'Rice', weight: 0.6 },
+            { item: 'Soup', weight: 0.4 },
+            { item: 'Other grain', weight: 0.3 },
+            { item: 'Other', weight: 0.2 },
+        ];
+        
+        const outfitOptions = {
+            body: [
+                { item: 'White Hoodie', weight: 0.4 },
+                { item: 'Brown Sweater', weight: 0.5 },
+                { item: 'Jacket', weight: 0.25 },
+                { item: 'Cheap Jacket', weight: 0.25 },
+            ],
+            pants: [
+                { item: 'Jeans', weight: 0.5 },
+                { item: 'White Pants', weight: 0.3 },
+                { item: 'Black Pants', weight: 0.2 },
+                { item: 'Gray Pants', weight: 0.15 },
+            ]
+        };
+        
+        const foodImages = {'Egg': ['https://tse3.mm.bing.net/th/id/OIGP.mvgffTE5uHiMFzZcD8ux?w=228&h=228&c=6&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.ZVSCk1heHa53W0Iy4Z8BaQHaE1?w=277&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.OLfcOSyImw2f9W4A3fboxgHaFJ?w=259&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.oH65LdfGCR4CCk58HciZqwHaGI?w=216&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.zX4iQ8H7BC94Rbv3enmE7gHaE7?w=298&h=198&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.H97aPCZtJ05p-O6wpsXcCwHaKX?w=142&h=198&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.ArBQLwboF_Ri60wFby0ZGQHaF7?w=248&h=198&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.HSpU38tfSo0rDG92sN6BGQHaFB?w=292&h=198&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP._vjlI4PPTBymy0RL1VN9jAHaKl?w=132&h=188&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.CxZ-GU77MUtA4wrCRpghYQHaFF?w=273&h=188&c=7&r=0&o=5&pid=1.7'], 'Granola': ['https://tse1.mm.bing.net/th/id/OIP.TdL7MKtpcTQ_umqVS1r2dwHaLG?w=126&h=189&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.oDOJSzIZs2t5aSB763GlaQHaE7?w=285&h=189&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.k-oU-5mbwOiD-MWjF9jJ0wHaE8?w=284&h=189&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP._1WPjsv_ItBQDvMBspprNwHaE6?w=285&h=189&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.MQFmLVdsn39o5a9zBNfFhgHaHa?w=182&h=182&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.VKEZlTUfVGp_1t8Nj460fAHaJw?w=138&h=182&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.LQv5qE3WmovyH1vXoiulzwHaE8?w=273&h=182&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.QHPgXVg5tsqiv__mdVGhBwHaLG?w=121&h=182&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.gvExnFDrEVPwSSz6V7cZZgHaLH?w=121&h=182&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.By67-ENgNxZNGmgWtZzv7QHaKc?w=129&h=182&c=7&r=0&o=5&pid=1.7'], 'Sandwich': ['https://tse3.mm.bing.net/th/id/OIGP.PaSaqhl8ooWtNXvHovmx?w=241&h=241&c=6&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.EPq0t0Y8HOa5Dw9oojxp0gHaHa?w=193&h=193&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.vi4fm7X8wyKLld1X4GLpZQHaFU?w=270&h=193&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.MJHdeZ2kfiMNG92__UtrHAHaE8?w=289&h=193&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.IUOpB6k8rmG5FxhjVfrSSgHaEJ?w=322&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.pJT7wuITc-L7r9rFi5Kd1gHaE8?w=241&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.hlm9KssadNlRaEYy04CL3QHaJU?w=144&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.2I_nrPw1ej5eiuF8HRPx6AHaHa?w=182&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.I5hYPOPo2d2UEJjAEK2A1wHaE7?w=248&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.NhqQaw0dmilLdJJQY2LMjAHaFj?w=219&h=180&c=7&r=0&o=5&pid=1.7'], 'Pasta': ['https://tse3.mm.bing.net/th/id/OIGP.lGjHZOscXAtdU1mod33J?w=268&h=268&c=6&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.MiAGrYafshORM2n_HLu4swHaHa?w=221&h=220&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.qwVB-T_KeTwwNnoFV98r4gHaLH?w=150&h=220&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.x63rmX39SPJOPg8wiE0JuwHaLG?w=150&h=220&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.Uj3S0dhCABiJWs2HYGL7gAHaLH?w=150&h=220&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.gkiuSAkuTDXKiEM6LHrEwwHaHa?w=155&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.1YXuW5W5853wDFAt4OplDAHaE7?w=233&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.R8fqXPhN9v50FxsCsF_KkgHaEc?w=219&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.n6Nv523e3IxokHbTCBy9yAHaE8?w=193&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.tN5xPm5VWZTjaWguf-P64gHaNH?w=115&h=180&c=7&r=0&o=5&pid=1.7'], 'Salad': ['https://tse1.mm.bing.net/th/id/OIGP.OJeh0bVmpua9E8FJ2yWh?w=228&h=228&c=6&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.tz8LK3d91am6-OHUo9wZOAHaE8?w=232&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.gko9l9fT9OyPDeHetA-qpQHaKy?w=121&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.GbHhRGoAnlqz3iYPzByZawHaKf?w=124&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.Gy8lB8KRsILuZr8_3d15hwHaHa?w=177&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.1LAvVrdA-cnhrVxkpisQXgHaHa?w=181&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.jevUF8toFBsTCfqvRcuIRQHaLH?w=121&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.n8D-S-UFvkh_HqouW0v6QgHaHa?w=150&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.kexpdXmo1CCIJDGUdtn1sQHaLG?w=121&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.4E6Py7Id0dPHBeu6ICvFqQHaLH?w=120&h=181&c=7&r=0&o=5&pid=1.7'], 'Rice': ['https://tse4.mm.bing.net/th/id/OIGP.cywPCSBVKfYrNBFOEMUO?w=228&h=228&c=6&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.7KY5PG2_E9mlPN2OcxcmGgHaE7?w=224&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.cvWZzHTCmAdsRMSgGWQXrwHaHa?w=171&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.CdJfsho7rSRCwLW7FVnBuQHaEx?w=267&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.roOrxVT_aszh8sU2HogF1QHaFj?w=216&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.qYjvUtEhGcP4e32pCcrsYgHaHa?w=126&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.Mu2DX53rXaGFA9jFPKrByAHaH7?w=116&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.QXy3jhQDV5WwgieX0bMn2wHaEK?w=252&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.1DyvV0l59sItkOaE6ISy2AHaEK?w=302&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.Tzh4ZWmDMcVEh1bXCFwpEAHaHa?w=170&h=180&c=7&r=0&o=5&pid=1.7'], 'Soup': ['https://tse4.mm.bing.net/th/id/OIGP.Pb2NZQATfDPrEL9cSmJy?w=194&h=194&c=6&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.pqIBlOaxrhZk1lcSddX05wHaHa?w=194&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.A7S8CxXQ-vXTNXeF1n9-TgHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.MIR2ulCSql_PLpJurM2DSgHaJQ?w=194&h=243&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.aiPTZpDL9qaD4PjQQESvVgHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.Wb45cfSA_Tn_B69nZPieSgHaJ4?w=194&h=259&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.dMzBs8OW-kL_egS4R3G2zAHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.VeqbAxBBzQj6g3aBg2k6gwHaGs?w=194&h=240&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.K3qBMsq9gZvbhN928C04CAHaE8?w=194&h=129&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.M8PbNsktVX7Pb6XBxBsKPAHaHa?w=194&h=193&c=7&r=0&o=5&pid=1.7'], 'Other grain': ['https://tse1.mm.bing.net/th/id/OIP.d5dSSK9AUBTvAWNhBb1FAAHaD5?w=324&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.rAd378NbrC88yhGyk02MaQHaE8?w=256&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.waZ12Uis2ryR6iajTe3vVAHaK3?w=116&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.dCsWiMu0FbKuCdsbl79VsgHaFj?w=194&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.vuiSRgnf_DbDbp_4A4hYpAHaE8?w=262&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.g0e-CWjZX6WDbslvdLAbkwHaFX?w=242&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.pSoQksxTyztyMb_o1j8ZSQHaFj?w=233&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.-P-CEHWCGpsonLbawzMiPwHaFW?w=243&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.446hM7Z0VWngcZ_gshHhKAHaHa?w=184&h=184&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.IbnCuI5CS2FMFKvENK2swAAAAA?w=296&h=184&c=7&r=0&o=5&pid=1.7'], 'Other': ['https://tse3.mm.bing.net/th/id/OIP.FZEljywz4EcPdCVi2c5JgAHaEK?w=322&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.bBGkS8hXz3QMMC4-Ud3BRQHaGj?w=204&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.iwaioQR5tRyoLJ7Mr7hCzQHaK3?w=123&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.KjJEEqStigYrEsfP7SWkVAHaKe?w=128&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.YbuLGJFQ9w3BfZbomomwfAHaG3?w=195&h=181&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.c5alIqmZ7RuA6OBwJRJPWAHaJQ?w=155&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.ZkG-QZHYEQUQbdau1cuEwQHaE8?w=291&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.L4EHyIoCpQPAZPFQcegW2wHaKd?w=137&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.7lofykhaz0PT6mxSIjwEWwHaHa?w=194&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP._8YfmYaIiS3EPhiAKf3L5gHaHa?w=195&h=194&c=7&r=0&o=5&pid=1.7']};
+const outfitImages = {'White Hoodie': ['https://tse1.mm.bing.net/th/id/OIP.OJFUE4-x8RuDVttxLnpuIQHaJQ?w=141&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.NMXbhygCtzLkdPdZa_fXngHaJ4?w=132&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.2Nlr_pCxn4HKjn8oIzrcRwHaHa?w=144&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.foTTjIvyPsu_SH5PvbAXIQAAAA?w=98&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.dUPqzVfOAHmZY9FlHTU57QHaEt?w=277&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.r88BZkbFtD0duFvjHVC6OQHaJQ?w=150&h=188&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.q9rAQruNmrIh67BBr1zcnQHaLa?w=122&h=188&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.lpCizXizE9SaW9iywyQhywHaHa?w=188&h=188&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.eIo-RcFCWi56SHyC4Z8yFgHaES?w=325&h=188&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.We9qVAvxNP3qhMnhUNtXcgHaHa?w=187&h=188&c=7&r=0&o=5&pid=1.7'], 'Brown Sweater': ['https://tse3.mm.bing.net/th/id/OIP.FQx8DCKrBG-EOeidt_xrvwHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.K26HpvRcldi5RxUsq3jiwwHaKX?w=194&h=271&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.fWiJIwbxjz-zFREF9YEJrQHaIi?w=194&h=224&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.qCcXbhdHHmnpVPUEf6ERlQHaLW?w=194&h=298&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.DJq8Shi26fv2aDarcLkUHwHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.ESsVY2Jku19feobTwoa1owHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.u5Zj_IS3z5odTs5eRFbPKAHaJE?w=194&h=238&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.TUAwGE1vgQ3uxjOraw4zeAHaE7?w=194&h=129&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.g02zfs0X_JHQVQrfleAE0gHaHa?w=194&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.NQgB1grC-86keuUYqh20CwHaIi?w=194&h=223&c=7&r=0&o=5&pid=1.7'], 'Jacket': ['https://tse1.mm.bing.net/th/id/OIP.Fmrw-4tazAuWot5znto7rQHaHa?w=202&h=202&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.iY5u5nV-DU3P0KRwmkjiIwHaIo?w=173&h=202&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.QCZlj25I1XcOXCp7DHPrEQHaJo?w=155&h=202&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.qYQr1Cy6uTYrG18YkUW32QHaHa?w=202&h=202&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.kN-MizwAJkxIm2gyRiqQvAHaIo?w=173&h=202&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.T-5DxY0C64i4HlOkdRIVDAHaHa?w=195&h=195&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.nHNWUMsEsPdm5-h-W0j-fwHaJQ?w=156&h=195&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.RJ8mUGzAvEHv2ENI-Ta9hQAAAA?w=146&h=195&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.2BePk0DPoYnApU5QedfrXAHaJ4?w=146&h=195&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.EmRu8ZPVK_4ZAOf8DHJG4wHaIo?w=168&h=195&c=7&r=0&o=5&pid=1.7'], 'Cheap Jacket': ['https://tse4.mm.bing.net/th/id/OIP.RW4SWYHMKiMxWgLAjrqaMQHaJS?w=136&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.KEDLVZANt-y9Aw_pGkMszQHaJ1?w=128&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.-y1Zh_wzUlO1cQtKe4pHugHaLG?w=115&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.DoxMQdhqI0VWLHGwnE8rQQHaFj?w=228&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.5xILAj3CABSHfnr-KL_mTgHaJ_?w=127&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.cjRzTgQ9PEc2sQ8-rXJ1kAHaFe?w=230&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.IeVRFA3oI_er8zsW47f-9QHaHa?w=169&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.2rrG2Ou8ejiSA3Y8EBaSewHaIz?w=143&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.-fPSt_znwItFlL2zhHaPoQHaHa?w=169&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.qk74FASxvUzPsO8jYzAWewHaD5?w=322&h=180&c=7&r=0&o=5&pid=1.7'], 'Jeans': ['https://tse1.mm.bing.net/th/id/OIP.S-WyVH3v-1q6vjdNHlCKpwHaGq?w=205&h=185&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.0xFfPuz6CaKVVEzz62sCqwHaLH?w=123&h=185&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.pSVClM78hAWIrBfcV3sgogHaNF?w=115&h=185&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.usuMIKigbCaVr54ve2syEQHaKL?w=134&h=185&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.mlpXTLEeR0K_KT_XUpGlDgHaHa?w=185&h=185&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.1uVTr1E-wUi2auK4nteuJgHaJ4?w=140&h=185&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.is2N7s42TU9YCN0Mcl27vQHaLW?w=115&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.zr1S-lYiRTFDjUUMFC2rbgHaIk?w=142&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.GKbDVS0grWumDU4BUANodAHaJ3?w=121&h=180&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.vWmoB51Y9nNhNX-wOGLRBAHaJ4?w=87&h=180&c=7&r=0&o=5&pid=1.7'], 'White Pants': ['https://tse3.mm.bing.net/th/id/OIP.wUqSzDvNfHTNLuB5iIvyDwHaKl?w=194&h=277&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP._-W7H5bAC2D6WY85zxaMngHaJQ?w=194&h=243&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.HzGPYF2aq-_GiuCVLNeCZQHaIT?w=194&h=217&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.KKfz6QA_tF34twcjANGW3wHaLW?w=194&h=298&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.cjJcPGwStkwQUVcijbXggQHaEt?w=194&h=123&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.2vo1NvNHhtpVPz9WFGv4cwHaJQ?w=194&h=243&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.Q9kwBsyVXQgnBABW4CJ6EQHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.P6rIEnnlBJ2F3epuRhSAKwHaKL?w=194&h=267&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.D-DL_evuF2n1lhe6toVwqAHaJQ?w=194&h=243&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.z8CBs88AskaXa5EtfUc0CQHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7'], 'Black Pants': ['https://tse2.mm.bing.net/th/id/OIP.MW1Fuy47mRbzRxiDzPVnXgHaKl?w=194&h=277&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.65KIQcz5baaOIsHhE_koPAHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.-xie8McEB4zGLR2bYFGssQHaKe?w=194&h=274&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.xVho4LLIjN7tAofIE91MEQHaHL?w=194&h=188&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.wZhvnACpib5D3D-CMlGPkwHaJ3?w=194&h=259&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.pmlRjql0TZk3-i3D5WSnBwHaJI?w=194&h=239&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.Cxmq884xe_QJKs3Y5pC6QgHaE8?w=194&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.n1kOxvUre02LLMwx0S8vmAHaJQ?w=194&h=243&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.Ia8-XnjglhQgT6t8rBPWNgHaJQ?w=194&h=243&c=7&r=0&o=5&pid=1.7', 'https://tse4.mm.bing.net/th/id/OIP.6wywYsZqotYPmEJpO8_rdgHaHa?w=194&h=194&c=7&r=0&o=5&pid=1.7'], 'Gray Pants': ['https://tse1.mm.bing.net/th/id/OIP.1X_P_3rPnKX_zH_3Rm-JiQHaK8?w=194&h=286&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.qYAUNNfA8GtFu7oF8C2EHQHaJC?w=194&h=237&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.PiPdq65IbtwWNt4hIWW7CAHaHa?w=194&h=194&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.hGtcHhyD5rG-TDxwttxxgwHaLh?w=194&h=302&c=7&r=0&o=5&pid=1.7', 'https://tse3.mm.bing.net/th/id/OIP.IEn1ufsgQN_t_GdgA3ta_AHaLI?w=194&h=292&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP._AXx6I0p7Msd9AmwghVb8gHaJQ?w=194&h=242&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.SP2Dq5m3Ers8-JhEsNWoZwHaLH?w=194&h=291&c=7&r=0&o=5&pid=1.7', 'https://tse2.mm.bing.net/th/id/OIP.3BYl0cOK75FyKyVM6nTl8AHaJR?w=194&h=307&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.G1fnMD8BB4Cbsyo5FzlFXAHaJ4?w=194&h=259&c=7&r=0&o=5&pid=1.7', 'https://tse1.mm.bing.net/th/id/OIP.vaYq-qzSeK9RETyvQA9y2AHaJ-?w=194&h=327&c=7&r=0&o=5&pid=1.7']};
+
+
+        function getRandomItem(options) {
+            const totalWeight = options.reduce((sum, option) => sum + option.weight, 0);
+            const random = Math.random() * totalWeight;
+
+            let cumulativeWeight = 0;
+            for (const option of options) {
+                cumulativeWeight += option.weight;
+                if (random < cumulativeWeight) {
+                    return option.item;
+                }
+            }
+        }
+
+        function randomize() {
+            const breakfastItem = getRandomItem(foodOptions);
+            const lunchItem = getRandomItem(lunchOptions);
+            const dinnerItem = getRandomItem(dinnerOptions);
+            const bodyItem = getRandomItem(outfitOptions.body);
+            const pantsItem = getRandomItem(outfitOptions.pants);
+
+            document.getElementById('breakfast').innerText = breakfastItem;
+            document.getElementById('lunch').innerText = lunchItem;
+            document.getElementById('dinner').innerText = dinnerItem;
+            document.getElementById('outfit').innerText = `${bodyItem} and ${pantsItem}`;
+
+            document.getElementById('breakfast-img').src = foodImages[breakfastItem][Math.floor(Math.random() * foodImages[breakfastItem].length)];
+            document.getElementById('lunch-img').src = foodImages[lunchItem][Math.floor(Math.random() * foodImages[lunchItem].length)];
+            document.getElementById('dinner-img').src = foodImages[dinnerItem][Math.floor(Math.random() * foodImages[dinnerItem].length)];
+            document.getElementById('body-img').src = outfitImages[bodyItem][Math.floor(Math.random() * outfitImages[bodyItem].length)];
+            document.getElementById('pants-img').src = outfitImages[pantsItem][Math.floor(Math.random() * outfitImages[pantsItem].length)];
+        }
+    </script>
+</body>
+</html>
