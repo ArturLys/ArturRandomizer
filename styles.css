@@ -1,62 +1,63 @@
-/* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Dark Theme with Purple Accents */
 body {
-    background-color: #121212;
-    color: #e0e0e0;
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* White text */
+    margin: 0;
+    padding: 20px;
 }
 
 .container {
+    max-width: 800px; /* Increased max width for better layout */
+    margin: 0 auto;
     text-align: center;
-    width: 100%;
-    max-width: 600px;
+    background-color: #1e1e1e; /* Slightly lighter dark background */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
 }
 
 button {
-    background-color: #6200ea;
-    color: #ffffff;
+    background-color: #6f2c91; /* Purple button color */
+    color: white;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
-    font-size: 1.2em;
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
-    margin-bottom: 20px;
     transition: background-color 0.3s ease;
+    margin-bottom: 20px; /* Space below the button */
 }
 
 button:hover {
-    background-color: #3700b3;
+    background-color: #5b247a; /* Darker purple button color on hover */
+}
+
+.row {
+    display: flex;
+    justify-content: space-around; /* Space out items evenly */
+    margin-bottom: 20px; /* Space below the row */
 }
 
 .section {
-    margin-top: 20px;
+    flex: 1; /* Allow sections to grow equally */
+    margin: 0 10px; /* Space between sections */
+    text-align: center; /* Center text in sections */
+}
+
+.section img {
+    height: 100px; /* Fixed height for images */
+    margin-top: 10px;
+    border-radius: 5px;
+    max-width: 100%; /* Responsive image */
 }
 
 h2 {
-    color: #bb86fc;
-    margin-bottom: 10px;
+    margin-top: 0;
+    color: #ffffff; /* Heading color */
 }
 
 p {
-    font-size: 1.1em;
-    margin: 5px 0;
-}
-
-img {
-    max-width: 200px;
-    border-radius: 8px;
-    margin-top: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; /* Paragraph text color */
 }
